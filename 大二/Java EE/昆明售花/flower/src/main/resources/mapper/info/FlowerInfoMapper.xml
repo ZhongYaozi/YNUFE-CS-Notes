@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.info.mapper.FlowerInfoMapper">
+    
+    <resultMap type="FlowerInfo" id="FlowerInfoResult">
+        <result property="flowerId"    column="flower_id"    />
+        <result property="flowerName"    column="flower_name"    />
+        <result property="flowerImageUrl"    column="flower_image_url"    />
+        <result property="flowerPrice"    column="flower_price"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectFlowerInfoVo">
+        select flower_id, flower_name, flower_image_url, flower_price, remark from flower_info
+    </sql>
+
+    <select id="selectFlowerInfoList" parameterType="FlowerInfo" resultMap="FlowerInfoResult">
+        <include refid="selectFlowerInfoVo"/>
+        <where>  
+            <if test="flowerName != null  and flowerName != ''"> and flower_name like concat('%', #{flowerName}, '%')</if>
+            <if test="flowerImageUrl != null  and flowerImageUrl != ''"> and flower_image_url = #{flowerImageUrl}</if>
+            <if test="flowerPrice != null "> and flower_price = #{flowerPrice}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+        </where>
+    </select>
+    
+    <select id="selectFlowerInfoByFlowerId" parameterType="Long" resultMap="FlowerInfoResult">
+        <include refid="selectFlowerInfoVo"/>
+        where flower_id = #{flowerId}
+    </select>
+
+    <insert id="insertFlowerInfo" parameterType="FlowerInfo" useGeneratedKeys="true" keyProperty="flowerId">
+        insert into flower_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="flowerName != null and flowerName != ''">flower_name,</if>
+            <if test="flowerImageUrl != null and flowerImageUrl != ''">flower_image_url,</if>
+            <if test="flowerPrice != null">flower_price,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="flowerName != null and flowerName != ''">#{flowerName},</if>
+            <if test="flowerImageUrl != null and flowerImageUrl != ''">#{flowerImageUrl},</if>
+            <if test="flowerPrice != null">#{flowerPrice},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFlowerInfo" parameterType="FlowerInfo">
+        update flower_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="flowerName != null and flowerName != ''">flower_name = #{flowerName},</if>
+            <if test="flowerImageUrl != null and flowerImageUrl != ''">flower_image_url = #{flowerImageUrl},</if>
+            <if test="flowerPrice != null">flower_price = #{flowerPrice},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where flower_id = #{flowerId}
+    </update>
+
+    <delete id="deleteFlowerInfoByFlowerId" parameterType="Long">
+        delete from flower_info where flower_id = #{flowerId}
+    </delete>
+
+    <delete id="deleteFlowerInfoByFlowerIds" parameterType="String">
+        delete from flower_info where flower_id in 
+        <foreach item="flowerId" collection="array" open="(" separator="," close=")">
+            #{flowerId}
+        </foreach>
+    </delete>
+</mapper>

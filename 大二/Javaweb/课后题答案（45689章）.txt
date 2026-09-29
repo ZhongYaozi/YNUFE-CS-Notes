@@ -1,0 +1,52 @@
+ch4
+一、单选题：CCBBC
+二、填空题：
+1、setCharacterEncoding()
+2、ServletConfig
+3、乱码 
+4、invalidate 
+5、ServletContext
+
+ch5
+一、单选题：ABBCD
+二、填空题：
+1、Cookie
+2、HttpServletResponse
+3、web.xml
+4、通知浏览器立即删除这个Cookie信息
+5、服务器
+
+ch6
+一、单选题：BBDCA
+二、填空题：
+１、filter
+２、事件源
+３、filter-name
+４、contextInitialized()
+５、attributeAdded
+
+ch8
+一、填空题
+1、ClassPathXmlApplicationContext、 FileSystemXmlApplicationContext、AnnotationConfigApplicationContext
+2、创建、初始化、销毁
+3、构造器注入、setter方法注入、接口注入
+4、<constructor-arg>、<property>。BeanFactoryAware、setBeanFactory( )
+5、singleton、prototype、request、session、global-session。默认的是Singleton。
+6、<context:component-scan> , base-package
+7、前置通知（Before）、后置通知（After）、环绕通知（Around）、返回后通知（AfterReturning）、异常通知（AfterThrowing）。
+8、@Repository
+@Service
+@Component
+@PostConstruct
+@PreDestroy
+二、选择题
+BADDCD
+
+ch9
+一、填空题
+1、controller、service、dao
+2、DispatcherServlet、HandlerAdapter、ViewResolver
+3、@PathVariable、@RequestHeader、@SessionAttribute
+4、Model、ModelAndView、String。
+5、preHandle( )、postHandle( )、afterCompletion( )
+二、选择题:DACCB

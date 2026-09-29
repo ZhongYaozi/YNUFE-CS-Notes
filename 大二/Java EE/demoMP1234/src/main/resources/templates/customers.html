@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <title>客户管理</title>
+    <style>
+      body {
+        font-family: "Segoe UI", "微软雅黑", Arial, sans-serif;
+        background: #f4f6fa;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        padding: 32px 40px 40px 40px;
+      }
+      h2 {
+        margin-top: 0;
+        font-weight: 600;
+        color: #2d3a4b;
+        letter-spacing: 2px;
+      }
+      .user-info {
+        color: #888;
+        margin-bottom: 18px;
+      }
+      .actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+      .btn {
+        padding: 6px 18px;
+        border: none;
+        border-radius: 6px;
+        background: #4f8cff;
+        color: #fff;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn:disabled,
+      .btn[disabled] {
+        background: #bfc9d9;
+        cursor: not-allowed;
+      }
+      .btn-add {
+        background: #43c59e;
+      }
+      .btn-add:hover {
+        background: #36a884;
+      }
+      .btn:hover {
+        background: #2563eb;
+      }
+      .search-form input[type="text"] {
+        padding: 6px 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 5px;
+        margin-right: 10px;
+        font-size: 15px;
+      }
+      .search-form button {
+        margin-left: 8px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      }
+      th,
+      td {
+        padding: 12px 10px;
+        text-align: center;
+      }
+      th {
+        background: #f0f4fa;
+        color: #2d3a4b;
+        font-weight: 600;
+      }
+      tr {
+        transition: background 0.2s;
+      }
+      tr:hover {
+        background: #f6faff;
+      }
+      .status-yes {
+        color: #43c59e;
+        font-weight: bold;
+      }
+      .status-no {
+        color: #e57373;
+        font-weight: bold;
+      }
+      .pagination {
+        margin-top: 24px;
+        text-align: center;
+      }
+      .pagination a,
+      .pagination span {
+        display: inline-block;
+        margin: 0 8px;
+        padding: 6px 14px;
+        border-radius: 5px;
+        color: #4f8cff;
+        background: #f0f4fa;
+        text-decoration: none;
+        font-size: 15px;
+        transition: background 0.2s, color 0.2s;
+      }
+      .pagination a:hover {
+        background: #4f8cff;
+        color: #fff;
+      }
+      @media (max-width: 600px) {
+        .container {
+          padding: 10px;
+        }
+        th,
+        td {
+          padding: 8px 2px;
+          font-size: 13px;
+        }
+        .actions {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>客户管理</h2>
+      <div class="user-info">
+        当前登录用户：<span
+          th:text="${user != null ? user.username : '未登录'}"
+        ></span>
+      </div>
+
+      <div class="actions">
+        <!-- 仅管理员显示新增按钮 -->
+        <div th:if="${user != null and user.role == 'ADMIN'}">
+          <a href="/customer/add" class="btn btn-add">新增</a>
+        </div>
+        <!-- 搜索表单 -->
+        <form class="search-form" th:action="@{/customer/search}" method="get">
+          姓名：<input type="text" name="name" placeholder="输入姓名" />
+          公司名称：<input
+            type="text"
+            name="compName"
+            placeholder="输入公司名称"
+          />
+          <button type="submit" class="btn">查询</button>
+        </form>
+      </div>
+
+      <table>
+        <tr>
+          <th>编号</th>
+          <th>姓名</th>
+          <th>电话</th>
+          <th>公司名称</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+        <tr th:each="c : ${page.records}">
+          <td th:text="${c.id}"></td>
+          <td th:text="${c.name}"></td>
+          <td th:text="${c.phone}"></td>
+          <td th:text="${c.compName}"></td>
+          <td>
+            <span th:text="${c.status ? '1' : '0'}"></span>
+          </td>
+          <td>
+            <button
+              class="btn"
+              th:if="${!c.status}"
+              th:onclick="'toggleStatus(' + ${c.id} + ')'"
+            >
+              切换操作
+            </button>
+            <button class="btn" th:if="${c.status}" disabled>切换操作</button>
+          </td>
+        </tr>
+      </table>
+
+      <!-- 分页控件 -->
+      <div class="pagination">
+        <a
+          th:if="${page.current > 1}"
+          th:href="@{/customer/list(pageNum=${page.current-1})}"
+          >上一页</a
+        >
+        <span
+          >第 <span th:text="${page.current}"></span> 页 / 共
+          <span th:text="${page.pages}"></span> 页</span
+        >
+        <a
+          th:if="${page.current < page.pages}"
+          th:href="@{/customer/list(pageNum=${page.current+1})}"
+          >下一页</a
+        >
+      </div>
+    </div>
+
+    <script>
+      function toggleStatus(id) {
+        fetch("/customer/toggle/" + id, { method: "POST" })
+          .then((res) => res.text())
+          .then((data) => {
+            if (data === "success") {
+              location.reload();
+            } else {
+              alert("操作失败");
+            }
+          });
+      }
+    </script>
+  </body>
+</html>

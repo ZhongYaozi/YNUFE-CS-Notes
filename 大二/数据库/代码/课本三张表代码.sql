@@ -1,0 +1,1 @@
+CREATE TABLE Student (  Sno   CHAR(7)  ,  Sname NCHAR(5) ,  SID   CHAR(18) ,  Ssex  NCHAR(1) ,   Sage  TINYINT  ,  Sdept NVARCHAR(20))CREATE TABLE Course (  Cno      CHAR(6) 	 ,  Cname    NVARCHAR(20) ,  Credit   NUMERIC(3,1),  Semester  TINYINT)CREATE TABLE SC (  Sno    CHAR(7) ,  Cno    CHAR(6) ,  Grade  TINYINT)  

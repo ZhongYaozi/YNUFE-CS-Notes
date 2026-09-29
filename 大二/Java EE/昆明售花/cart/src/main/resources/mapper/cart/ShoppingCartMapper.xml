@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.cart.mapper.ShoppingCartMapper">
+    
+    <resultMap type="ShoppingCart" id="ShoppingCartResult">
+        <result property="cartId"    column="cart_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="flowerId"    column="flower_id"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectShoppingCartVo">
+        select cart_id, user_id, flower_id, quantity, create_time, update_time from shopping_cart
+    </sql>
+
+    <select id="selectShoppingCartList" parameterType="ShoppingCart" resultMap="ShoppingCartResult">
+        <include refid="selectShoppingCartVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="flowerId != null "> and flower_id = #{flowerId}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+        </where>
+    </select>
+    
+    <select id="selectShoppingCartByCartId" parameterType="Long" resultMap="ShoppingCartResult">
+        <include refid="selectShoppingCartVo"/>
+        where cart_id = #{cartId}
+    </select>
+
+    <insert id="insertShoppingCart" parameterType="ShoppingCart" useGeneratedKeys="true" keyProperty="cartId">
+        insert into shopping_cart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="flowerId != null">flower_id,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="flowerId != null">#{flowerId},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShoppingCart" parameterType="ShoppingCart">
+        update shopping_cart
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="flowerId != null">flower_id = #{flowerId},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where cart_id = #{cartId}
+    </update>
+
+    <delete id="deleteShoppingCartByCartId" parameterType="Long">
+        delete from shopping_cart where cart_id = #{cartId}
+    </delete>
+
+    <delete id="deleteShoppingCartByCartIds" parameterType="String">
+        delete from shopping_cart where cart_id in 
+        <foreach item="cartId" collection="array" open="(" separator="," close=")">
+            #{cartId}
+        </foreach>
+    </delete>
+    <!-- 在 ShoppingCartMapper.xml 中新增以下SQL查询： -->
+
+    <!-- 根据用户ID和花卉ID查询购物车项 -->
+    <select id="selectByUserAndFlower" parameterType="map" resultMap="ShoppingCartResult">
+        <include refid="selectShoppingCartVo"/>
+        where user_id = #{userId} and flower_id = #{flowerId}
+    </select>
+
+    <!-- 根据用户ID删除购物车 -->
+    <delete id="deleteCartByUserId" parameterType="Long">
+        delete from shopping_cart where user_id = #{userId}
+    </delete>
+</mapper>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <title>添加客户</title>
+    <style>
+      body {
+        font-family: "Segoe UI", "微软雅黑", Arial, sans-serif;
+        background: #f4f6fa;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        padding: 32px 40px 40px 40px;
+      }
+      h2 {
+        margin-top: 0;
+        font-weight: 600;
+        color: #2d3a4b;
+        letter-spacing: 2px;
+      }
+      .user-info {
+        color: #888;
+        margin-bottom: 20px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #2d3a4b;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 5px;
+        font-size: 15px;
+      }
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        background: #4f8cff;
+        color: #fff;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn:hover {
+        background: #2563eb;
+      }
+      .btn-cancel {
+        background: #e5e7eb;
+        color: #2d3a4b;
+        margin-right: 10px;
+      }
+      .btn-cancel:hover {
+        background: #d1d5db;
+      }
+      .actions {
+        margin-top: 30px;
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>添加客户</h2>
+      <div class="user-info">
+        当前登录用户：<span
+          th:text="${user != null ? user.username : '未登录'}"
+        ></span>
+      </div>
+
+      <form th:action="@{/customer/add}" method="post">
+        <div class="form-group">
+          <label for="name">姓名</label>
+          <input type="text" id="name" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="phone">电话</label>
+          <input type="text" id="phone" name="phone" required />
+        </div>
+        <div class="form-group">
+          <label for="compName">公司名称</label>
+          <input type="text" id="compName" name="compName" required />
+        </div>
+        <div class="actions">
+          <a href="/customer/list" class="btn btn-cancel">取消</a>
+          <button type="submit" class="btn">保存</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

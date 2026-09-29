@@ -1,0 +1,8 @@
+CREATE TABLE userinfo (
+userId int(11) NOT NULL AUTO_INCREMENT,
+username varchar(20) DEFAULT NULL,
+password varchar(10) DEFAULT NULL,
+role int(11) DEFAULT NULL,
+status bit(1) DEFAULT NULL,
+PRIMARY KEY (userId)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

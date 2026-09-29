@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>图书管理</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/AdminLTE.css}">
+    <link rel="stylesheet" th:href="@{/css/pagination.css}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+</head>
+<body>
+<div class="box-body">
+<!-- <div class="pull-left" th:if="${#session.getAttribute('user').role =='ADMIN'}">333-->
+    <div class="pull-left" th:if="${user.role =='ADMIN'}">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default"> 新增
+            </button>
+        </div>
+    </div>
+    <!--数据搜索 -->
+    <div class="pull-right">
+        <div class="has-feedback">
+            <form th:action="@{/book/search}" method="post">
+                图书名称：<input name="name">&nbsp&nbsp&nbsp&nbsp
+                图书作者：<input name="author">&nbsp&nbsp&nbsp&nbsp
+                <input class="btn btn-default" type="submit" value="查询">
+            </form>
+        </div>
+    </div>
+    <div class="table-box">
+        <!-- 数据表格 -->
+        <table id="dataList" class="table table-bordered table-striped table-hover text-center">
+            <thead>
+            <tr>
+                <th>图书名称</th>
+                <th>图书作者</th>
+                <th>出版社</th>
+                <th>图书状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="book : ${books}">
+                <tr>
+                    <td th:text="${book.name}"/>
+                    </td>
+                    <td th:text="${book.author}"></td>
+                    <td th:text="${book.press}"></td>
+                    <td>
+                        <th:block th:if="${book.status == '0'}">
+                            可借阅
+                        </th:block>
+                        <th:block th:if="${book.status =='1'}">
+                            借阅中
+                        </th:block>
+                        <th:block th:if="${book.status =='2'}">
+                            归还中
+                        </th:block>
+                    </td>
+                    <td class="text-center">
+                        <button th:if="${book.status =='0'}" type="button" class="btn bg-olive btn-xs"
+                                th:onclick="findBookById([[${book.id}]]);"> 借阅
+                        </button>
+                        <button th:if="${book.status =='1' ||book.status =='2'}" type="button"
+                                class="btn bg-olive btn-xs"
+                                disabled="true">借阅
+                        </button>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+<script>
+    function findBookById(id) {
+        $.get("/book/find/" + id)
+    }
+</script>
+</html>

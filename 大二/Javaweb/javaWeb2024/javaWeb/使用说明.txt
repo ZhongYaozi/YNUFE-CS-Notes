@@ -1,0 +1,8 @@
+此为基本的例子，
+运行起点：http://localhost:8090/javaWeb_web/userinfo.jsp
+使用时，可以加入更多Html/H5标签，CSS样式，JavaScript脚本，来丰富前端；
+后端可以增加登录会话跟踪、日志处理等更多功能。
+
+JDBC的接口，根据MySql版本，灵活替换。
+
+czx,2022.7
