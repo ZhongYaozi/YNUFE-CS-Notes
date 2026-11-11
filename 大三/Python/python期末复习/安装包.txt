@@ -1,0 +1,14 @@
+pip install jieba -i https://pypi.doubanio.com/simple --trusted-host pypi.doubanio.com
+
+心形图片和程序放在同一个路径下
+
+pip install wordcloud -i https://pypi.doubanio.com/simple --trusted-host pypi.doubanio.com
+
+
+
+
+
+
+清华镜像源试试  pip install wordcloud -i https://pypi.tuna.tsinghua.edu.cn/simple/ 
+
+pip install Tushare -i https://pypi.doubanio.com/simple --trusted-host pypi.doubanio.com
